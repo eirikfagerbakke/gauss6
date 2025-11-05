@@ -35,15 +35,20 @@ solve = solver.make_solve(f)
 trajectory = solve(u0)
 ```
 
+We currently do not support adaptive timestepping and assume a constant step size.
+
 The package also exposes high-order central-difference helpers:
 
 ```python
 from gauss6 import dx_order_6
 
-spacing = 0.01
-values = jnp.sin(jnp.linspace(0, jnp.pi, 512))
-first_derivative = dx_order_6(values, spacing)
+x = jnp.linspace(0, 2*jnp.pi, 512, endpoint=False)
+dx = x[1]-x[0]
+values = jnp.sin(x)
+first_derivative = dx_order_6(values, dx)
 ```
+
+We assume that the function is periodic and that the grid is equidistant.
 
 ## License
 
