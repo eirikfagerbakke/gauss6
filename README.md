@@ -30,7 +30,7 @@ t = jnp.linspace(0.0, 1.0, 33)
 params = {"alpha": -10.0, "forcing": lambda t: jnp.zeros_like(t)}
 u0 = jnp.array([0.1, 0.0])
 
-solver = GaussLegendre6Solver(t, args=params, size=u0.size)
+solver = Gauss6(t, args=params, size=u0.size)
 solve = solver.make_solve(f)
 trajectory = solve(u0)
 ```
