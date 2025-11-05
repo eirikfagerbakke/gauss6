@@ -20,15 +20,15 @@ pip install gauss6
 
 ```python
 import jax.numpy as jnp
-from gauss6 import Gauss6, dx_order_6
+from gauss6 import Gauss6
 
 def f(t, u, args):
-    eta, gamma, dx = args["eta"], args["gamma"], args["dx"]
-    return -Dx(eta/2*u**2 + gamma**2 * Dxx(u, dx), dx)
+    alpha = args["alpha"]
+    return alpha * u
 
-t = jnp.linspace(0.0, 1.0, 33)
-params = {"alpha": -10.0, "forcing": lambda t: jnp.zeros_like(t)}
-u0 = jnp.array([0.1, 0.0])
+t = jnp.linspace(0.0, 2.0, 201)
+params = {"alpha": -1.0}
+u0 = jnp.array([1.0])  # initial condition
 
 solver = Gauss6(t, args=params, size=u0.size)
 solve = solver.make_solve(f)
