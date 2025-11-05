@@ -20,11 +20,11 @@ pip install gauss6
 
 ```python
 import jax.numpy as jnp
-from gauss6 import Gauss6
+from gauss6 import Gauss6, dx_order_6
 
-def f(t, u, params):
-    alpha = params["alpha"]
-    return alpha * (1.0 - u**2) * u + params["forcing"](t)
+def f(t, u, args):
+    eta, gamma, dx = args["eta"], args["gamma"], args["dx"]
+    return -Dx(eta/2*u**2 + gamma**2 * Dxx(u, dx), dx)
 
 t = jnp.linspace(0.0, 1.0, 33)
 params = {"alpha": -10.0, "forcing": lambda t: jnp.zeros_like(t)}

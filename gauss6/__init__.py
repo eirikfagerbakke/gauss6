@@ -1,6 +1,6 @@
 """Gauss6: utilities for high-order time integration using JAX."""
 
-from .gauss6 import GaussLegendre6Solver
+from .gauss6 import Gauss6
 from .central_differences import (
     dx_order_2,
     dx_order_4,
@@ -14,7 +14,7 @@ from .central_differences import (
 )
 
 __all__ = [
-    "GaussLegendre6Solver",
+    "Gauss6",
     "dx_order_2",
     "dx_order_4",
     "dx_order_6",
