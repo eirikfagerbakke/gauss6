@@ -1,10 +1,10 @@
 import jax
 import jax.numpy as jnp
-from jax.scipy.sparse.linalg import gmres
 from jax import lax
 import sparsejac
 from jax.experimental import sparse
 from jax_tqdm import scan_tqdm
+from .gmres import gmres
 
 class Gauss6:
     def __init__(self, t, args, max_newton=jnp.inf, max_backtrack=jnp.inf, max_gmres=jnp.inf, size=64 * 64, tqdm=True):
@@ -112,7 +112,8 @@ class Gauss6:
 
             def F(w): # we want to solve F(w) = 0
                 z = T @ w
-                return - (Lambda @ w) / dt + (T_inv @ jax.vmap(lambda c_i, z_i : f(tn + c_i*dt, un + z_i, args))(c, z))
+                rhs = - (Lambda @ w) / dt + (T_inv @ jax.vmap(lambda c_i, z_i : f(tn + c_i*dt, un + z_i, args))(c, z))
+                return rhs
 
             def A0(v):
                 return gamma * v - jvp(v.astype(c_dtype)).real
@@ -233,8 +234,8 @@ class Gauss6:
             args: extra args to pass to f
             """
             # initialize guess as zeros (shape (3, state_dim))
-            w_guess = jnp.zeros((3, u0.shape[0]))#, dtype=u0.dtype)
-            w_old = jnp.zeros((3, u0.shape[0]))#, dtype=u0.dtype)
+            w_guess = jnp.zeros((3, u0.shape[0]), dtype=u0.dtype)
+            w_old = jnp.zeros((3, u0.shape[0]), dtype=u0.dtype)
 
             carry_init = (u0, w_old, w_guess)
             _, u_series = lax.scan(lambda carry, tn: step(carry, tn), carry_init, (jnp.arange(len(self.t[:-1])), self.t[:-1]))
