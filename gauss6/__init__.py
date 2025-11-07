@@ -26,4 +26,4 @@ __all__ = [
     "dxxx_order_6",
 ]
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gauss6"
-version = "0.1.0"
+version = "0.1.1"
 description = "Gauss-Legendre 6th-order implicit integrator and finite-difference helpers built on JAX."
 readme = "README.md"
 requires-python = ">=3.9"
